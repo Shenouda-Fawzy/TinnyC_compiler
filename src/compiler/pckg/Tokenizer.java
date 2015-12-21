@@ -36,6 +36,7 @@ public class Tokenizer {
     protected final String strLetral = "\"(\\w|\\s)*\""; // Matching string.
     protected final String comment = "//.*[^\\n]";
     protected final String operator = "\\=|\\+|\\*|\\/|\\-|\\<|\\>|\\<=|\\>=|\\==|\\!=|\\!|\\+=|\\-=|\\/=";
+    protected final String relOperator = "\\<|\\>|\\<=|\\>=|\\==|\\!=";
     protected final String specialSymboles = ";|,|[\\]]|[\\[]|[\\(]|[\\)]|[\\}]|[\\{]"; // Matching: + - { } ( ) [ ] ; ,
     
     
@@ -64,6 +65,7 @@ public class Tokenizer {
         regExp.put("String Letral", this.strLetral);
         regExp.put("Comment" , this.comment);
         regExp.put("Operator", this.operator);
+        regExp.put("relOperator", this.relOperator);
         regExp.put("Special Symbole", this.specialSymboles);
         
             
@@ -158,6 +160,16 @@ public class Tokenizer {
                 continue;
                 
             }
+
+            pattern = Pattern.compile(regExp.get("relOperator"));
+            m = pattern.matcher(arr.get(i).toString());
+            isValidToken = m.matches();
+            if(isValidToken == true){
+                System.out.println(arr.get(i).toString() + "\tRelation Operator");
+                Token tok = new Token(arr.get(i).toString() , "relOperator");
+                tokens.add(tok);
+                continue;
+            }
             
             pattern = Pattern.compile(regExp.get("Operator"));
             m = pattern.matcher(arr.get(i).toString());
@@ -168,6 +180,8 @@ public class Tokenizer {
                 tokens.add(tok);
                 continue;
             }
+            
+
             
             pattern = Pattern.compile(regExp.get("Int Letral"));
             m = pattern.matcher(arr.get(i).toString());

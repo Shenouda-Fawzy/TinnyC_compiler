@@ -54,21 +54,31 @@ public class Main {
         Tokenizer t = new Tokenizer();
         String code0 = "int x ;";
         String code1 = "int gcd (int u, int v)\n" +
-"{" +
-"if (v == 0) return u;\n" +
-"else return gcd (v,u-u/v*v);\n" +
-"}" +
-"void main (void)\n" +
-"{" +
-"int x; int y;" +
-"write_int(gcd(x,y));" +
-"}";
+                        "{" +
+                        "if (v == 0) return u;\n" +
+                        "else return gcd (v,u-u/v*v);\n" +
+                        "}" +
+                        "void main (void)\n" +
+                        "{" +
+                        "int x; int y;" +
+                        "write_int(gcd(x,y));" +
+                        "}";
         
-        String ss = "else "; // ----- Any word that start and end with the same symbole will cause logic error.
+        String code2 = "int Fibonacci(int x1)\n" +
+                        "{\n" +
+                        "int val;\n" +
+                        "if (x1 == 1) val = 1;\n" +
+                        "if (x1 == 2) val = 1;\n" +
+                        "if (x1 > 2) val = Fibonacci(x1-2)+Fibonacci(x1-1);\n" +
+                        "return val;\n" +
+                        "}";
+        String ss = "if (x > 5) x = 12;"; // ----- Any word that start and end with the same symbole will cause logic error.
         System.out.println("---------- Tokens(Valid & InValid) --------------");
         ArrayList result ;
-        result = t.tokenizedInput(code1);
-        
+        //result = t.tokenizedInput(code2);
+        Parser p = new Parser();
+        p.tokenizedInput(ss);
+        p.programe();
 //        for(int i = 0 ; i < result.size() ; i++)
 //            System.out.println(result.get(i));
 //        ArrayList test1 = new ArrayList();
