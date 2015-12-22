@@ -89,7 +89,6 @@ public class Tokenizer {
         //ArrayList arr = new ArrayList(); // Will contain the regExp.
         
         StringBuilder buffer = new StringBuilder(""); // Empty buffer.
-
         for(int i = 0 ; i < input.length() ; i++){
             StringBuilder twoChar = new StringBuilder();
                 
@@ -138,13 +137,15 @@ public class Tokenizer {
             }
                 
         }// End of for loop.
+        arr.add("END"); // This is a special token indecate the end of file.
         
         return this.matchTokensWithRegx();
     } // End of function.
     
     private ArrayList matchTokensWithRegx(){
         Matcher m;
-        for(int i = 0 ; i < arr.size() ; i++){
+       
+        for(int i = 0 ; i < arr.size() - 1 ; i++){
             
             if(arr.get(i).toString().equals(" ")|| arr.get(i).toString().equals("\t") || arr.get(i).toString().equals("\n"))
                 continue;
@@ -230,13 +231,15 @@ public class Tokenizer {
             isValidToken = m.matches();
             if(isValidToken == true){
                 System.out.println(arr.get(i).toString() + "\tcomment");
-                Token tok = new Token(arr.get(i).toString() , "tcomment");
+                Token tok = new Token(arr.get(i).toString() , "comment");
                 tokens.add(tok);
                 continue;
             }
             System.out.println(arr.get(i).toString() + "\tInvlalid token");
             
         }// End of for loop
+    
+        
         return tokens;
     }// end of method
 }

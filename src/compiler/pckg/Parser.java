@@ -41,21 +41,23 @@ public class Parser extends Tokenizer{
      
     private void declaration(){
         type_specifier();
-        String str = tokens.get(i).getToken();
+        String dTok = tokens.get(i).getToken();
         Pattern p = Pattern.compile(this.identifireRegx);
-        Matcher m = p.matcher(str); // match ID
+        Matcher m = p.matcher(dTok); // match ID
         if(m.matches()){
             int x = i;
             x++;
-            if(tokens.get(x).getToken().equals("("))
+            if(tokens.get(x).getToken().equals("(")){
+                //i++;
                 function_declaration();
+            }
             else
                 variable_declartion();
         }
         
     }
     
-    private void variable_declartion(){ // Unable to handle arrays.
+    private void variable_declartion(){ // This just handle the declaration without intializing the variable.
         type_specifier();
         
         String str = tokens.get(i).getToken();
@@ -65,39 +67,42 @@ public class Parser extends Tokenizer{
         if(m.matches())
             matchToken(str); // match ID
 
-        if(tokens.get(i).getToken().equals("["))
+        if(tokens.get(i).getToken().equals("[")){
             matchToken("[");
         
-        str = tokens.get(i).getToken();
-        p = Pattern.compile(this.intLetral);
-        m = p.matcher(str); // match NUM [0-9]
+            str = tokens.get(i).getToken();
+            p = Pattern.compile(this.intLetral);
+            m = p.matcher(str); // match NUM [0-9]
         
-        if(m.matches())
-            matchToken(str); // match NUM [0-9]
-        else
-            syntaxError(); // if it's not NUM (This is just for performance).
-        if(tokens.get(i).getToken().equals("]"))
-            matchToken("]");
+            if(m.matches())
+                matchToken(str); // match NUM [0-9]
+            else
+                syntaxError(); // if it's not NUM (This is just for performance).
+            if(tokens.get(i).getToken().equals("]"))
+                matchToken("]");
+        }
         matchToken(";");
     }
     
     private void type_specifier(){
-        if(tokens.get(i).getToken().equals("int")){
+        String tsTok = tokens.get(i).getToken();
+        if(tsTok.equals("int")){
             matchToken("int");
         }
-        else {
+        else if(tsTok.equals("void")){
             matchToken("void");
         }
 
     }
     
     private void function_declaration(){
-        type_specifier();
-        String str = tokens.get(i).getToken();
+        
+        //type_specifier();
+        String fdTok = tokens.get(i).getToken();
         Pattern p = Pattern.compile(this.identifireRegx);
-        Matcher m = p.matcher(str); // match ID
+        Matcher m = p.matcher(fdTok); // match ID
         if(m.matches()) // Match ID.
-            matchToken(str);
+            matchToken(fdTok);
 
         matchToken("(");
         params();
@@ -107,7 +112,8 @@ public class Parser extends Tokenizer{
     }
     
     private void params() {
-        if(tokens.get(i).getToken().equals("void"))
+        String psTok = tokens.get(i).getToken();
+        if(psTok.equals("void"))
             matchToken("void");
         else
             param_list();
@@ -125,11 +131,11 @@ public class Parser extends Tokenizer{
     private void param(){
         type_specifier();
         
-        String str = tokens.get(i).getToken();
+        String pTok = tokens.get(i).getToken();
         Pattern p = Pattern.compile(this.identifireRegx);
-        Matcher m = p.matcher(str); // match ID
+        Matcher m = p.matcher(pTok); // match ID
         if(m.matches()) // Match ID.
-            matchToken(str);
+            matchToken(pTok);
         else // If it's not ID (This just for performance)
             syntaxError();
         
@@ -141,46 +147,52 @@ public class Parser extends Tokenizer{
 
     private void compouned_Statment() { // --------
         //if( tokens.get(i).getToken().equals("int") || tokens.get(i).getToken().equals("void") ){
-            while(tokens.get(i).getToken().equals("int") || tokens.get(i).getToken().equals("void") ){
-                local_declaration();
-                statment_list();
-            }
+            //while(tokens.get(i).getToken().equals("int") || tokens.get(i).getToken().equals("void") ){
+        matchToken("{");
+        local_declaration();
+        statment_list();
+        matchToken("}");
+            //}
        // }
     }
     
     private void local_declaration(){
         
-        while (i != ENDFILE)
+        while (tokens.get(i).getToken().equals("int") && i != ENDFILE){ // while tok = int and ch = ';'
             variable_declartion();
+        }
     
     }
     
     private void statment_list(){
-        while (i != ENDFILE)
+        while (tokens.get(i).getToken().equals("int") && i != ENDFILE) // tokens.get(i).getToken().equals("int") && 
             statment();
     }
     
     private void statment(){
-        String str = tokens.get(i).getToken();
+        String sTok = tokens.get(i).getToken();
         Pattern p = Pattern.compile(this.identifireRegx);
-        Matcher m = p.matcher(str); // match ID
+        Matcher m = p.matcher(sTok); // match ID
         
-        if(str.equals("if"))
+        if(sTok.equals("if"))
             selection_stmt();
-        else if(str.equals("while"))
+        else if(sTok.equals("while"))
             iteration_stmt();
-        else if (str.equals("read"))
+        else if (sTok.equals("read"))
             read_stmt();
-        else if(str.equals("write"))
+        else if(sTok.equals("write"))
             write_stmt();
-        else if(str.equals("int") || str.equals("void"))
+        else if(sTok.equals("{"))
+            compouned_Statment();
+        else if(sTok.equals("int") || sTok.equals("void"))
             compouned_Statment();
         if(m.matches())
             expression_stmt(); 
     }
     
     private void expression_stmt(){
-        if(tokens.get(i).getToken().equals(";"))
+        String exsTok = tokens.get(i).getToken();
+        if(exsTok.equals(";"))
             matchToken(";");
         else{
             expressoin();
@@ -189,25 +201,25 @@ public class Parser extends Tokenizer{
     }
     
     private void selection_stmt(){
-        String str = tokens.get(i).getToken();
-        if(str.equals("if"))
-            matchToken(str);
+        String ssTok = tokens.get(i).getToken();
+        if(ssTok.equals("if"))
+            matchToken(ssTok);
         matchToken("(");
         expressoin();
         statment();
-        str = tokens.get(i).getToken();
-        if(str.equals("else")){
-            matchToken(str);
+        ssTok = tokens.get(i).getToken();
+        if(ssTok.equals("else")){
+            matchToken(ssTok);
             statment();
         }
         
     }
     
     private void iteration_stmt(){
-        String str = tokens.get(i).getToken();
+        String itTok = tokens.get(i).getToken();
         
-        if(str.equals("while"))
-            matchToken(str);
+        if(itTok.equals("while"))
+            matchToken(itTok);
         matchToken("(");
         expressoin();
         matchToken(")");
@@ -217,9 +229,9 @@ public class Parser extends Tokenizer{
     private void return_stmt(){
         matchToken("return");
         
-        String str = tokens.get(i).getToken();
+        String retTok = tokens.get(i).getToken();
         Pattern p = Pattern.compile(this.identifireRegx);
-        Matcher m = p.matcher(str); // match ID
+        Matcher m = p.matcher(retTok); // match ID
         
         if(m.matches())
             expressoin();  
@@ -228,11 +240,11 @@ public class Parser extends Tokenizer{
     private void read_stmt(){
         matchToken("read");
         
-        String str = tokens.get(i).getToken();
+        String redTok = tokens.get(i).getToken();
         Pattern p = Pattern.compile(this.identifireRegx);
-        Matcher m = p.matcher(str); // match ID
+        Matcher m = p.matcher(redTok); // match ID
         if(m.matches())
-            matchToken(str);
+            matchToken(redTok);
     }
     
     private void write_stmt(){
@@ -241,13 +253,13 @@ public class Parser extends Tokenizer{
     }
     
     private void expressoin(){
-        String str = tokens.get(i).getToken();
+        String expTok = tokens.get(i).getToken();
         Pattern p = Pattern.compile(this.identifireRegx);
-        Matcher m = p.matcher(str); // match ID
+        Matcher m = p.matcher(expTok); // match ID
         while (m.matches()){
-            str = tokens.get(i).getToken();
+            expTok = tokens.get(i).getToken();
             p = Pattern.compile(this.identifireRegx);
-            m = p.matcher(str); // match ID
+            m = p.matcher(expTok); // match ID
             matchToken("=");
         }
         
@@ -255,12 +267,12 @@ public class Parser extends Tokenizer{
     }
     
     private void var (){
-        String str = tokens.get(i).getToken();
+        String varTok = tokens.get(i).getToken();
         Pattern p = Pattern.compile(this.identifireRegx);
-        Matcher m = p.matcher(str); // match ID
+        Matcher m = p.matcher(varTok); // match ID
         
         if(m.matches())
-            matchToken(str);
+            matchToken(varTok);
         if(tokens.get(i).getToken().equals("[")){
             matchToken("[");
             expressoin();
@@ -271,19 +283,19 @@ public class Parser extends Tokenizer{
     private void simple_expression(){
         additive_expression();
         
-        String str = tokens.get(i).getToken();
+        String simTok = tokens.get(i).getToken();
         Pattern p = Pattern.compile(this.relOperator);
-        Matcher m = p.matcher(str); // match ID
+        Matcher m = p.matcher(simTok); // match ID
         if(m.matches()){
-            matchToken(str);
+            matchToken(simTok);
             additive_expression();
         }
         
     }
     
     private void relop(){
-        String str = tokens.get(i).getToken();
-        switch(str){
+        String relTok = tokens.get(i).getToken();
+        switch(relTok){
             case "<=":
                 matchToken("<=");
                 break;
@@ -340,12 +352,12 @@ public class Parser extends Tokenizer{
     
     private void factor(){
         
-        String str = tokens.get(i).getToken();
+        String facTok = tokens.get(i).getToken();
         Pattern p = Pattern.compile(this.intLetral);
-        Matcher m = p.matcher(str); // match ID
+        Matcher m = p.matcher(facTok); // match ID
         
         Pattern id = Pattern.compile(this.identifireRegx);
-        Matcher idM = id.matcher(str);
+        Matcher idM = id.matcher(facTok);
         
         if(tokens.get(i).getToken().equals("(")){
             matchToken("(");
@@ -353,7 +365,7 @@ public class Parser extends Tokenizer{
             matchToken(")");
         }
         else if(m.matches())
-            matchToken(str); // Matching NUM [0-9]
+            matchToken(facTok); // Matching NUM [0-9]
         else if(idM.matches()){
             int j = i;
             j++;
@@ -365,11 +377,11 @@ public class Parser extends Tokenizer{
     }
     
     private void call(){
-        String str = tokens.get(i).getToken();
+        String calTok = tokens.get(i).getToken();
         Pattern p = Pattern.compile(this.identifireRegx);
-        Matcher m = p.matcher(str); // match ID
+        Matcher m = p.matcher(calTok); // match ID
         if(m.matches())
-            matchToken(str);
+            matchToken(calTok);
         else
             syntaxError();
         matchToken("(");
@@ -379,11 +391,11 @@ public class Parser extends Tokenizer{
     }
     
     private void args(){
-        String str = tokens.get(i).getToken();
+        String argTok = tokens.get(i).getToken();
         Pattern p = Pattern.compile(this.identifireRegx);
-        Matcher m = p.matcher(str); // match ID
+        Matcher m = p.matcher(argTok); // match ID
         if(m.matches()){
-            matchToken(str);
+            matchToken(argTok);
         }
         else
             empty();
