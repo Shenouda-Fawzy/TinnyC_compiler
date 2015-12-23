@@ -14,14 +14,15 @@ public class Parser extends Tokenizer{
     
     private static int i = 0; // to ket the next token. 
     private final int ENDFILE = tokens.size() - 1;
+    private boolean parsed;
     
     
     public Parser() throws IOException {
-        
+        parsed = true;
     }
 
     public Parser(Tokenizer tokens) {
-        
+        parsed = true;
     }
     
 
@@ -35,7 +36,7 @@ public class Parser extends Tokenizer{
         
         
         declaration();
-        while( (i != ENDFILE) && !tokens.get(i).getToken().equals(ENDTOKEN) )
+        while( (i < ENDFILE) && !tokens.get(i).getToken().equals(ENDTOKEN) )
             declaration();
     }
      
@@ -158,14 +159,21 @@ public class Parser extends Tokenizer{
     
     private void local_declaration(){
         
-        while ( tokens.get(i).getToken().equals("int") && (i != ENDFILE || !tokens.get(i).getToken().equals(ENDTOKEN)) ){ // while tok = int and ch = ';'
+        while ( tokens.get(i).getToken().equals("int") && (i < ENDFILE || !tokens.get(i).getToken().equals(ENDTOKEN)) ){ // while tok = int and ch = ';'
             variable_declartion();
         }
     
     }
     
     private void statment_list(){
-        while ( ( tokens.get(i).getToken().equals("int") || tokens.get(i).getToken().equals("if") || tokens.get(i).getToken().equals("while") || tokens.get(i).getValue().equals("Identefier")) && (i != ENDFILE || !tokens.get(i).getToken().equals(ENDTOKEN)) ) // tokens.get(i).getToken().equals("int") && 
+        while ( ( tokens.get(i).getToken().equals("int") ||
+                tokens.get(i).getToken().equals("if") || 
+                tokens.get(i).getToken().equals("return") || 
+                tokens.get(i).getToken().equals("while") ||
+                tokens.get(i).getToken().equals("read") ||
+                tokens.get(i).getToken().equals("write") ||
+                tokens.get(i).getValue().equals("Identefier")) && 
+                (i < ENDFILE || !tokens.get(i).getToken().equals(ENDTOKEN)) ) // tokens.get(i).getToken().equals("int") && 
             statment();
     }
     
@@ -185,6 +193,9 @@ public class Parser extends Tokenizer{
             case "read":
                 read_stmt();
                 break;
+            case "return":
+                return_stmt();
+                break;
             case "write":
                 write_stmt();
                 break;
@@ -196,22 +207,7 @@ public class Parser extends Tokenizer{
                 default:
                     expression_stmt();
                     break;
-        }
-//        if(tokens.get(i).getValue().equals("Identefier"))
-//            expression_stmt();
-//        else if(sTok.equals("if"))
-//            selection_stmt();
-//        else if(sTok.equals("while"))
-//            iteration_stmt();
-//        else if (sTok.equals("read"))
-//            read_stmt();
-//        else if(sTok.equals("write"))
-//            write_stmt();
-//        else if(sTok.equals("{"))
-//            compouned_Statment();
-//        else if(sTok.equals("int") || sTok.equals("void"))
-//            compouned_Statment();
-        
+        }     
         
     }
     
@@ -260,22 +256,23 @@ public class Parser extends Tokenizer{
         Matcher m = p.matcher(retTok); // match ID
         
         if(m.matches())
-            expressoin();  
+            expressoin(); 
+        matchToken(";");
     }
     
     private void read_stmt(){
         matchToken("read");
         
         String redTok = tokens.get(i).getToken();
-        Pattern p = Pattern.compile(this.identifireRegx);
-        Matcher m = p.matcher(redTok); // match ID
-        if(m.matches())
-            matchToken(redTok);
+        matchToken(redTok);
+        matchToken(";");
     }
     
     private void write_stmt(){
         matchToken("write");
         expressoin();
+        matchToken(";");
+        
     }
     
     private void expressoin(){ // x = y = z = 5 + 7 
@@ -354,14 +351,7 @@ public class Parser extends Tokenizer{
     private void additive_expression(){
         term();
         while(tokens.get(i).getToken().equals("+") || tokens.get(i).getToken().equals("-")){
-            switch (tokens.get(i).getToken()) {
-                case "+":
-                    matchToken("+");
-                    break;
-                case "-":
-                    matchToken("-");
-                    break;
-            }
+            addop();
             term();
         }
     }
@@ -369,21 +359,14 @@ public class Parser extends Tokenizer{
     private void addop(){
         if(tokens.get(i).getToken().equals("+"))
             matchToken("+");
-        else
+        else if(tokens.get(i).getToken().equals("-"))
             matchToken("-");
     }
     
     private void term(){
         factor();
         while (tokens.get(i).getToken().equals("*") || tokens.get(i).getToken().equals("/")){
-            switch (tokens.get(i).getToken()) {
-                case "*":
-                    matchToken("*");
-                    break;
-                case "/":
-                    matchToken("/");
-                    break;
-            }
+            multop();
             factor();
         }
     }
@@ -481,13 +464,12 @@ public class Parser extends Tokenizer{
     
     private void syntaxError(){
         System.out.println("Syntax Error!");
-        System.exit(1); // exit the programe if Syntax erro happend.
+        parsed = false;
+        
+        //System.exit(0); // exit the programe if Syntax erro happend.
         
     }
     public boolean isParsed(){
-        if(i == tokens.size() - 1)
-            return true;
-        else
-            return false;
+        return parsed;
     }
 }// end of parser class

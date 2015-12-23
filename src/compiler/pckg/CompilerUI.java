@@ -23,6 +23,7 @@ public class CompilerUI extends javax.swing.JFrame {
     public CompilerUI() throws IOException {
         initComponents();
         parser = new Parser();
+        parseBtn.setEnabled(false);
     }
 
     /**
@@ -66,8 +67,6 @@ public class CompilerUI extends javax.swing.JFrame {
             }
         });
 
-        parseTxtRes.setText("jLabel1");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -84,7 +83,7 @@ public class CompilerUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(parseTxtRes)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -92,7 +91,7 @@ public class CompilerUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
                     .addComponent(jScrollPane2))
                 .addGap(18, 18, 18)
                 .addComponent(tokenizBtn)
@@ -109,6 +108,14 @@ public class CompilerUI extends javax.swing.JFrame {
     private void tokenizBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tokenizBtnActionPerformed
         parser.tokenizedInput(inputTxt.getText());
         outPutTxt.setText(parser.toString());
+        if(parser.isValidToken() == true){
+            parseBtn.setEnabled(true);
+        }
+        else{
+            parseTxtRes.setForeground(Color.RED);
+            parseTxtRes.setText("Syntax ERROR");
+        }
+        
     }//GEN-LAST:event_tokenizBtnActionPerformed
 
     private void parseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parseBtnActionPerformed

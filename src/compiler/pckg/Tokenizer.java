@@ -39,7 +39,7 @@ public class Tokenizer {
     protected final String relOperator = "\\<|\\>|\\<=|\\>=|\\==|\\!=";
     protected final String specialSymboles = ";|,|[\\]]|[\\[]|[\\(]|[\\)]|[\\}]|[\\{]"; // Matching: + - { } ( ) [ ] ; ,
     protected static String ENDTOKEN;
-    
+    private static boolean validTokns;
     
     private Map<String , String> regExp;
     protected ArrayList arr; // Will contain the regExp.
@@ -54,7 +54,7 @@ public class Tokenizer {
 //    private FileReader inputFile; // For reading.
     
     public Tokenizer(){
-        
+        validTokns = true;
         arr = new ArrayList();
         tokens = new ArrayList<>();// Array List of 'Token' Object.
         
@@ -138,7 +138,9 @@ public class Tokenizer {
         }
         return res; //To change body of generated methods, choose Tools | Templates.
     }
-    
+    protected boolean isValidToken(){
+        return validTokns;
+    }
     private ArrayList matchTokensWithRegx(){
         Matcher m;
         int i;
@@ -233,6 +235,10 @@ public class Tokenizer {
                 continue;
             }
             //System.out.println(arr.get(i).toString() + "\tInvlalid token");
+            Token tok = new Token(arr.get(i).toString() , "INVALID");
+            tokens.add(tok);
+            validTokns = false;
+            break;
             
         }// End of for loop
     

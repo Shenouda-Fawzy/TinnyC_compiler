@@ -41,6 +41,7 @@ public class Main {
                         "if (x1 == 1) val = 1;\n" +
                         "if (x1 == 2) val = 1;\n" +
                         "if (x1 > 2) val = Fibonacci(x1-2)+Fibonacci(x1-1);\n" +
+                        "return val;\n" +
                         "}";
         String ss = "int main(int x)\n" +
                     "{\n" +
@@ -56,15 +57,12 @@ public class Main {
                         "result = Fibonacci(x*y);\n" +
                         "output(result);\n" +
                         "}";
-//        //System.out.println("---------- Tokens(Valid & InValid) --------------");
-//        Token token = new Token(code3, code3);
-//        ArrayList result = new ArrayList<Token>() ;
-//        
-//        result = t.tokenizedInput(code2);
-//        System.out.print(t.toString());
+
 //        Parser p = new Parser();
-//        p.tokenizedInput(code2);
+//        p.tokenizedInput(code3);
+//        System.out.println(p.toString());
 //        p.programe();
+//        
 //        System.out.println(p.isParsed());
         
     }
