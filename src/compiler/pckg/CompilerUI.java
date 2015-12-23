@@ -5,6 +5,7 @@
  */
 package compiler.pckg;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,10 +19,10 @@ public class CompilerUI extends javax.swing.JFrame {
     /**
      * Creates new form CompilerUI
      */
-    Tokenizer token;
+    Parser parser;
     public CompilerUI() throws IOException {
         initComponents();
-        token = new Tokenizer();
+        parser = new Parser();
     }
 
     /**
@@ -33,18 +34,20 @@ public class CompilerUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        tokenizBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         inputTxt = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         outPutTxt = new javax.swing.JTextArea();
+        parseBtn = new javax.swing.JButton();
+        parseTxtRes = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setLabel("Tokenize");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        tokenizBtn.setLabel("Tokenize");
+        tokenizBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                tokenizBtnActionPerformed(evt);
             }
         });
 
@@ -56,21 +59,33 @@ public class CompilerUI extends javax.swing.JFrame {
         outPutTxt.setRows(5);
         jScrollPane2.setViewportView(outPutTxt);
 
+        parseBtn.setText("Parse");
+        parseBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                parseBtnActionPerformed(evt);
+            }
+        });
+
+        parseTxtRes.setText("jLabel1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(parseBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tokenizBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(153, 153, 153)
-                        .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(48, Short.MAX_VALUE))
+                        .addComponent(parseTxtRes)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -80,16 +95,36 @@ public class CompilerUI extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
                     .addComponent(jScrollPane2))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addGap(74, 74, 74))
+                .addComponent(tokenizBtn)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(parseBtn)
+                    .addComponent(parseTxtRes))
+                .addGap(33, 33, 33))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void tokenizBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tokenizBtnActionPerformed
+        parser.tokenizedInput(inputTxt.getText());
+        outPutTxt.setText(parser.toString());
+    }//GEN-LAST:event_tokenizBtnActionPerformed
+
+    private void parseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parseBtnActionPerformed
+
+        parser.programe();
+        boolean res = parser.isParsed();
+        if(res == true){
+            parseTxtRes.setForeground(Color.GREEN);
+            parseTxtRes.setText("Programe Pased with no syntax error ");
+        }
+        else{
+            parseTxtRes.setForeground(Color.RED);
+            parseTxtRes.setText("Syntax ERROR");
+        }
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_parseBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -132,9 +167,11 @@ public class CompilerUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea inputTxt;
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea outPutTxt;
+    private javax.swing.JButton parseBtn;
+    private javax.swing.JLabel parseTxtRes;
+    private javax.swing.JButton tokenizBtn;
     // End of variables declaration//GEN-END:variables
 }

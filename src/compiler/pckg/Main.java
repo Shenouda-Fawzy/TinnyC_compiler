@@ -18,39 +18,10 @@ import sun.misc.Queue;
 public class Main {
     public static void main(String [] arg) throws IOException{
         System.out.println("Hello");
-//        Tokenizer tokeniz = new Tokenizer();
-//        tokeniz.tokenize2();
-        //CompilerUI comp = new CompilerUI();
-        //comp.setVisible(true);
+        CompilerUI comp = new CompilerUI();
+        comp.setVisible(true);
 
-        
-// Stor them in List.
-        //String letterRex = "[a-zA-Z]";
-        String identifireRegx = "[a-zA-Z]([a-zA-Z]|\\d|_)*";
-        String intLetral = "[0-9]+";
-        String keyWord = "main|int|bool|string|void|true|false|if|else|while|return";
-        String strLetral = "\"(\\w|\\s)*\"";
-        String comment = "//.*[^\\n]";
-        String operator = "\\+|\\*|\\/|\\-|\\<|\\>|\\<=|\\>=|\\==|\\!=|\\!";
-        String specialSymboles = ";|,|[\\]]|[\\[]|[\\(]|[\\)]|[\\}]|[\\{]"; // Matching: + - { } ( ) [ ] ; ,
-        
-        String id1 = "1246"; // False.
-        String id2 = "_S"; // False.
-        String id3 = "a1a"; // True
-        String id4 = "y12asd";// false
-        String isKeyWord = "true";
-        String isString = "\"shenouda Fawzy\"";
-        String isComment = "//I'am shenouda";
-        String isOperator = "==";
-        String isSymbole = ";";
-        
-        
-        Pattern pattern = Pattern.compile(identifireRegx);
-        System.out.println("Compiled Sucessfully");
-        Matcher m = pattern.matcher(id3);
-        boolean bol = m.matches();
-        System.out.println("String abc: " + bol);
-        
+  
         Tokenizer t = new Tokenizer();
         String code0 = "int x ;";
         String code1 = "int gcd (int u, int v)\n" +
@@ -85,12 +56,16 @@ public class Main {
                         "result = Fibonacci(x*y);\n" +
                         "output(result);\n" +
                         "}";
-        System.out.println("---------- Tokens(Valid & InValid) --------------");
-        ArrayList result ;
-        //result = t.tokenizedInput(code2);
-        Parser p = new Parser();
-        p.tokenizedInput(code2);
-        p.programe();
+//        //System.out.println("---------- Tokens(Valid & InValid) --------------");
+//        Token token = new Token(code3, code3);
+//        ArrayList result = new ArrayList<Token>() ;
+//        
+//        result = t.tokenizedInput(code2);
+//        System.out.print(t.toString());
+//        Parser p = new Parser();
+//        p.tokenizedInput(code2);
+//        p.programe();
+//        System.out.println(p.isParsed());
         
     }
     

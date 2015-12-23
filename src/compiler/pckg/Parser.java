@@ -20,7 +20,7 @@ public class Parser extends Tokenizer{
         
     }
 
-    public Parser(Tokenizer tokens) throws IOException {
+    public Parser(Tokenizer tokens) {
         
     }
     
@@ -484,6 +484,10 @@ public class Parser extends Tokenizer{
         System.exit(1); // exit the programe if Syntax erro happend.
         
     }
-    
-    
+    public boolean isParsed(){
+        if(i == tokens.size() - 1)
+            return true;
+        else
+            return false;
+    }
 }// end of parser class

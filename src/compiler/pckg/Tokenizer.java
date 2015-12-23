@@ -50,10 +50,10 @@ public class Tokenizer {
     //private final String tokenPath = "E:\\FCI_ASYUT\\4th year\\CS Department\\Compiler\\Compiler Project\\regExp.txt";
     
     private PrintWriter tokenFile; // For writing.
-    private File codeFile;
-    private FileReader inputFile; // For reading.
+//    private File codeFile;
+//    private FileReader inputFile; // For reading.
     
-    public Tokenizer() throws IOException{
+    public Tokenizer(){
         
         arr = new ArrayList();
         tokens = new ArrayList<>();// Array List of 'Token' Object.
@@ -67,18 +67,6 @@ public class Tokenizer {
         regExp.put("Operator", this.operator);
         regExp.put("relOperator", this.relOperator);
         regExp.put("Special Symbole", this.specialSymboles);
-        
-            
-
-        try {
-            tokenFile = new PrintWriter(tokenPath);
-            codeFile = new File(codePath);
-            inputFile = new FileReader(codeFile); // For readeing the code and tokenize it.
-            
-        } catch (FileNotFoundException ex) {
-            //Logger.getLogger(Tokenizer.class.getName()).log(Level.SEVERE, null, ex);
-            ex.getMessage();
-        }
         
         
     }
@@ -141,6 +129,15 @@ public class Tokenizer {
         
         return this.matchTokensWithRegx();
     } // End of function.
+
+    @Override
+    public String toString() {
+        String res = "";
+        for(int i = 0; i < tokens.size() ; i++){
+            res += "  "+tokens.get(i).getToken() + "\t" +tokens.get(i).getValue() + "\n";
+        }
+        return res; //To change body of generated methods, choose Tools | Templates.
+    }
     
     private ArrayList matchTokensWithRegx(){
         Matcher m;
@@ -155,7 +152,7 @@ public class Tokenizer {
             m = pattern.matcher(arr.get(i).toString());
             isValidToken = m.matches();
             if(isValidToken == true){
-                System.out.println(arr.get(i).toString() + "\tKey Word");
+                //System.out.println(arr.get(i).toString() + "\tKey Word");
                 Token tok = new Token(arr.get(i).toString() , "Key Word");
                 tokens.add(tok);
                 continue;
@@ -166,7 +163,7 @@ public class Tokenizer {
             m = pattern.matcher(arr.get(i).toString());
             isValidToken = m.matches();
             if(isValidToken == true){
-                System.out.println(arr.get(i).toString() + "\tRelation Operator");
+                //System.out.println(arr.get(i).toString() + "\tRelation Operator");
                 Token tok = new Token(arr.get(i).toString() , "relOperator");
                 tokens.add(tok);
                 continue;
@@ -176,7 +173,7 @@ public class Tokenizer {
             m = pattern.matcher(arr.get(i).toString());
             isValidToken = m.matches();
             if(isValidToken == true){
-                System.out.println(arr.get(i).toString() + "\tOperator");
+                //System.out.println(arr.get(i).toString() + "\tOperator");
                 Token tok = new Token(arr.get(i).toString() , "Operator");
                 tokens.add(tok);
                 continue;
@@ -188,7 +185,7 @@ public class Tokenizer {
             m = pattern.matcher(arr.get(i).toString());
             isValidToken = m.matches();
             if(isValidToken == true){
-                System.out.println(arr.get(i).toString() + "\tInt Leteral");
+                //System.out.println(arr.get(i).toString() + "\tInt Leteral");
                 Token tok = new Token(arr.get(i).toString() , "Int Leteral");
                 tokens.add(tok);
                 continue;
@@ -198,7 +195,7 @@ public class Tokenizer {
             m = pattern.matcher(arr.get(i).toString());
             isValidToken = m.matches();
             if(isValidToken == true){
-                System.out.println(arr.get(i).toString() + "\tString Leteral");
+                //System.out.println(arr.get(i).toString() + "\tString Leteral");
                 Token tok = new Token(arr.get(i).toString() , "String Leteral");
                 tokens.add(tok);
                 continue;
@@ -208,7 +205,7 @@ public class Tokenizer {
             m = pattern.matcher(arr.get(i).toString());
             isValidToken = m.matches();
             if(isValidToken == true){
-                System.out.println(arr.get(i).toString() + "\tIdentefier");
+                //System.out.println(arr.get(i).toString() + "\tIdentefier");
                 Token tok = new Token(arr.get(i).toString() , "Identefier");
                 tokens.add(tok);
                 continue;
@@ -220,7 +217,7 @@ public class Tokenizer {
             m = pattern.matcher(arr.get(i).toString());
             isValidToken = m.matches();
             if(isValidToken == true){
-                System.out.println(arr.get(i).toString() + "\tSpecial Symbole");
+                //System.out.println(arr.get(i).toString() + "\tSpecial Symbole");
                 Token tok = new Token(arr.get(i).toString() , "Special Symbole");
                 tokens.add(tok);
                 continue;
@@ -230,12 +227,12 @@ public class Tokenizer {
             m = pattern.matcher(arr.get(i).toString());
             isValidToken = m.matches();
             if(isValidToken == true){
-                System.out.println(arr.get(i).toString() + "\tcomment");
+                //System.out.println(arr.get(i).toString() + "\tcomment");
                 Token tok = new Token(arr.get(i).toString() , "comment");
                 tokens.add(tok);
                 continue;
             }
-            System.out.println(arr.get(i).toString() + "\tInvlalid token");
+            //System.out.println(arr.get(i).toString() + "\tInvlalid token");
             
         }// End of for loop
     
