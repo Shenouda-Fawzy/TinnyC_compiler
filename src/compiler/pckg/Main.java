@@ -70,7 +70,6 @@ public class Main {
                         "if (x1 == 1) val = 1;\n" +
                         "if (x1 == 2) val = 1;\n" +
                         "if (x1 > 2) val = Fibonacci(x1-2)+Fibonacci(x1-1);\n" +
-                        "return val;\n" +
                         "}";
         String ss = "int main(int x)\n" +
                     "{\n" +
@@ -81,7 +80,7 @@ public class Main {
         //result = t.tokenizedInput(code2);
         Parser p = new Parser();
         p.tokenizedInput(ss);
-        //p.programe();
+        p.programe();
 //        for(int i = 0 ; i < result.size() ; i++)
 //            System.out.println(result.get(i));
 //        ArrayList test1 = new ArrayList();

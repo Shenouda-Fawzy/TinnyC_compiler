@@ -38,7 +38,7 @@ public class Tokenizer {
     protected final String operator = "\\=|\\+|\\*|\\/|\\-|\\<|\\>|\\<=|\\>=|\\==|\\!=|\\!|\\+=|\\-=|\\/=";
     protected final String relOperator = "\\<|\\>|\\<=|\\>=|\\==|\\!=";
     protected final String specialSymboles = ";|,|[\\]]|[\\[]|[\\(]|[\\)]|[\\}]|[\\{]"; // Matching: + - { } ( ) [ ] ; ,
-    
+    protected static String ENDTOKEN;
     
     
     private Map<String , String> regExp;
@@ -144,8 +144,8 @@ public class Tokenizer {
     
     private ArrayList matchTokensWithRegx(){
         Matcher m;
-       
-        for(int i = 0 ; i < arr.size() - 1 ; i++){
+        int i;
+        for( i = 0 ; i < arr.size() - 1 ; i++){
             
             if(arr.get(i).toString().equals(" ")|| arr.get(i).toString().equals("\t") || arr.get(i).toString().equals("\n"))
                 continue;
@@ -239,6 +239,10 @@ public class Tokenizer {
             
         }// End of for loop
     
+        ENDTOKEN = arr.get(i++).toString();
+        Token tok = new Token(ENDTOKEN , "ENDFILE");
+        tokens.add(tok);
+        //System.out.println(ms);
         
         return tokens;
     }// end of method

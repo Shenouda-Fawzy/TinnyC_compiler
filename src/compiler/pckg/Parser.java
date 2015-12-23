@@ -35,7 +35,7 @@ public class Parser extends Tokenizer{
         
         
         declaration();
-        while(i != ENDFILE)
+        while( (i != ENDFILE) && !tokens.get(i).getToken().equals(ENDTOKEN) )
             declaration();
     }
      
@@ -158,14 +158,14 @@ public class Parser extends Tokenizer{
     
     private void local_declaration(){
         
-        while (tokens.get(i).getToken().equals("int") && i != ENDFILE){ // while tok = int and ch = ';'
+        while ( tokens.get(i).getToken().equals("int") && (i != ENDFILE || !tokens.get(i).getToken().equals(ENDTOKEN)) ){ // while tok = int and ch = ';'
             variable_declartion();
         }
     
     }
     
     private void statment_list(){
-        while (tokens.get(i).getToken().equals("int") && i != ENDFILE) // tokens.get(i).getToken().equals("int") && 
+        while (tokens.get(i).getToken().equals("int") && (i != ENDFILE || !tokens.get(i).getToken().equals(ENDTOKEN)) ) // tokens.get(i).getToken().equals("int") && 
             statment();
     }
     
@@ -417,7 +417,7 @@ public class Parser extends Tokenizer{
     
     
     private boolean matchToken(String expected){
-        if(i == ENDFILE){ // Reached the end of file(Code).
+        if(i == ENDFILE|| tokens.get(i).getToken().equals(ENDTOKEN) ){ // Reached the end of file(Code).
             System.out.println("Program Parsed Successfully");
             return true;
         }
