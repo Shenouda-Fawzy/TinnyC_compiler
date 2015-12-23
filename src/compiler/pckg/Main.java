@@ -89,25 +89,8 @@ public class Main {
         ArrayList result ;
         //result = t.tokenizedInput(code2);
         Parser p = new Parser();
-        p.tokenizedInput(code3);
+        p.tokenizedInput(code2);
         p.programe();
-//        for(int i = 0 ; i < result.size() ; i++)
-//            System.out.println(result.get(i));
-//        ArrayList test1 = new ArrayList();
-//        
-//        for(int i = 0 ; i < result.size() ; i++)
-//            if(!result.get(i).toString().equals(" ")){
-//                test1.add(result.get(i));
-//            }
-//      
-//        Parser p = new Parser();
-//        boolean test = p.variablDeclaration(test1);
-//        System.out.println("Parser Test: " + test);
-//        System.out.println("----------- Matching Tokens ----------------");
-        
-        
-        
-        
         
     }
     

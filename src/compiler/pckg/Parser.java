@@ -171,24 +171,46 @@ public class Parser extends Tokenizer{
     
     private void statment(){
         String sTok = tokens.get(i).getToken();
-        //sTok = tokens.get(i).getToken();
-        Pattern p = Pattern.compile(this.identifireRegx);
-        Matcher m = p.matcher(sTok); // match ID
+//        //sTok = tokens.get(i).getToken();
+//        Pattern p = Pattern.compile(this.identifireRegx);
+//        Matcher m = p.matcher(sTok); // match ID
                 
-        if(m.matches())
-            expression_stmt(); 
-        else if(sTok.equals("if"))
-            selection_stmt();
-        else if(sTok.equals("while"))
-            iteration_stmt();
-        else if (sTok.equals("read"))
-            read_stmt();
-        else if(sTok.equals("write"))
-            write_stmt();
-        else if(sTok.equals("{"))
-            compouned_Statment();
-        else if(sTok.equals("int") || sTok.equals("void"))
-            compouned_Statment();
+        switch(sTok){
+            case "if":
+                selection_stmt();
+                break;
+            case "while":
+                iteration_stmt();
+                break;
+            case "read":
+                read_stmt();
+                break;
+            case "write":
+                write_stmt();
+                break;
+            case "{":
+            case "int":
+            case "void":
+                compouned_Statment();
+                break;
+                default:
+                    expression_stmt();
+                    break;
+        }
+//        if(tokens.get(i).getValue().equals("Identefier"))
+//            expression_stmt();
+//        else if(sTok.equals("if"))
+//            selection_stmt();
+//        else if(sTok.equals("while"))
+//            iteration_stmt();
+//        else if (sTok.equals("read"))
+//            read_stmt();
+//        else if(sTok.equals("write"))
+//            write_stmt();
+//        else if(sTok.equals("{"))
+//            compouned_Statment();
+//        else if(sTok.equals("int") || sTok.equals("void"))
+//            compouned_Statment();
         
         
     }
@@ -292,11 +314,11 @@ public class Parser extends Tokenizer{
     private void simple_expression(){
         additive_expression();
         
-        String simTok = tokens.get(i).getToken();
-        Pattern p = Pattern.compile(this.relOperator);
-        Matcher m = p.matcher(simTok); // match ID
-        if(m.matches()){
-            matchToken(simTok);
+        //String simTok = tokens.get(i).getToken();
+//        Pattern p = Pattern.compile(this.relOperator);
+//        Matcher m = p.matcher(simTok); // match ID
+        if(tokens.get(i).getValue().equals("relOperator")){
+            relop();
             additive_expression();
         }
         
@@ -331,8 +353,15 @@ public class Parser extends Tokenizer{
     
     private void additive_expression(){
         term();
-        while(tokens.get(i).getToken().equals("+")){
-            matchToken("+");
+        while(tokens.get(i).getToken().equals("+") || tokens.get(i).getToken().equals("-")){
+            switch (tokens.get(i).getToken()) {
+                case "+":
+                    matchToken("+");
+                    break;
+                case "-":
+                    matchToken("-");
+                    break;
+            }
             term();
         }
     }
@@ -346,8 +375,15 @@ public class Parser extends Tokenizer{
     
     private void term(){
         factor();
-        while (tokens.get(i).getToken().equals("*")){
-            matchToken("*");
+        while (tokens.get(i).getToken().equals("*") || tokens.get(i).getToken().equals("/")){
+            switch (tokens.get(i).getToken()) {
+                case "*":
+                    matchToken("*");
+                    break;
+                case "/":
+                    matchToken("/");
+                    break;
+            }
             factor();
         }
     }
