@@ -75,11 +75,21 @@ public class Main {
                     "{\n" +
                     "int x;\n" +
                     "}"; // ----- Any word that start and end with the same symbole will cause logic error.
+        String code3 = "void main(void)\n" +
+                        "{\n" +
+                        "int x;\n" +
+                        "int y;\n" +
+                        "int result;\n" +
+                        "x = 5;\n" +
+                        "y = 2;\n" +
+                        "result = Fibonacci(x*y);\n" +
+                        "output(result);\n" +
+                        "}";
         System.out.println("---------- Tokens(Valid & InValid) --------------");
         ArrayList result ;
         //result = t.tokenizedInput(code2);
         Parser p = new Parser();
-        p.tokenizedInput(ss);
+        p.tokenizedInput(code3);
         p.programe();
 //        for(int i = 0 ; i < result.size() ; i++)
 //            System.out.println(result.get(i));
