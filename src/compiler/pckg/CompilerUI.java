@@ -44,6 +44,7 @@ public class CompilerUI extends javax.swing.JFrame {
         parseTxtRes = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Tiny C Parser");
 
         tokenizBtn.setLabel("Tokenize");
         tokenizBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -54,6 +55,11 @@ public class CompilerUI extends javax.swing.JFrame {
 
         inputTxt.setColumns(20);
         inputTxt.setRows(5);
+        inputTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                inputTxtKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(inputTxt);
 
         outPutTxt.setColumns(20);
@@ -106,8 +112,10 @@ public class CompilerUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tokenizBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tokenizBtnActionPerformed
+        
         parser.tokenizedInput(inputTxt.getText());
         outPutTxt.setText(parser.toString());
+        
         if(parser.isValidToken() == true){
             parseBtn.setEnabled(true);
         }
@@ -132,6 +140,13 @@ public class CompilerUI extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_parseBtnActionPerformed
+
+    private void inputTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputTxtKeyPressed
+        parser.resetParser();
+        outPutTxt.setText(" ");
+        parseBtn.setEnabled(false);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inputTxtKeyPressed
 
     /**
      * @param args the command line arguments

@@ -472,4 +472,9 @@ public class Parser extends Tokenizer{
     public boolean isParsed(){
         return parsed;
     }
+    
+    public void resetParser(){
+        tokens.clear();
+        arr.clear();
+    }
 }// end of parser class
